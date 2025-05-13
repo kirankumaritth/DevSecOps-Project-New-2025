@@ -1,37 +1,44 @@
-# ✅ Step 2: Ansible Setup Overview
-
-### 📁 Directory Structure
-
-```
-ansible/
-├── inventory
-├── playbook.yml
-└── roles/
-    ├── common/
-    ├── docker/
-    ├── jenkins/
-    ├── k3s/
-    ├── sonarqube/
-    ├── prometheus/
-    └── grafana/
-```
-
-We’ll break this into a **modular playbook** for each service.
+# ✅ Step 2: Ansible Setup – Detailed Instructions
 
 ---
 
-## 📄 `inventory`
+## 📁 Directory Structure Setup
+
+First, create the following directory layout:
+
+```bash
+mkdir -p ansible/roles/{common,docker,jenkins,k3s,sonarqube,prometheus,grafana}/tasks
+cd ansible
+```
+
+---
+
+## 📄 Create Inventory File
+
+Create the Ansible inventory file:
+
+```bash
+vi inventory
+```
+
+Paste the following content:
 
 ```ini
 [devsecops]
 <your-ec2-public-ip> ansible_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa
 ```
 
-Replace `<your-ec2-public-ip>` with the Terraform output.
+Replace `<your-ec2-public-ip>` with the actual IP from Terraform output.
 
 ---
 
-## 📄 `playbook.yml`
+## 📄 Create Main Playbook
+
+```bash
+vi playbook.yml
+```
+
+Paste the following:
 
 ```yaml
 - name: DevSecOps All-in-One Setup
@@ -49,21 +56,17 @@ Replace `<your-ec2-public-ip>` with the Terraform output.
 
 ---
 
-## 🔧 Roles Overview
-
-Each role contains:
-
-```
-roles/<role_name>/
-├── tasks/
-│   └── main.yml
-```
+## 🔧 Create Each Role
 
 ---
 
 ### ✅ Role: `common`
 
-📄 `roles/common/tasks/main.yml`
+```bash
+vi roles/common/tasks/main.yml
+```
+
+Paste:
 
 ```yaml
 - name: Update APT cache
@@ -84,7 +87,11 @@ roles/<role_name>/
 
 ### ✅ Role: `docker`
 
-📄 `roles/docker/tasks/main.yml`
+```bash
+vi roles/docker/tasks/main.yml
+```
+
+Paste:
 
 ```yaml
 - name: Install Docker
@@ -110,7 +117,11 @@ roles/<role_name>/
 
 ### ✅ Role: `jenkins`
 
-📄 `roles/jenkins/tasks/main.yml`
+```bash
+vi roles/jenkins/tasks/main.yml
+```
+
+Paste:
 
 ```yaml
 - name: Add Jenkins GPG key and repo
@@ -142,7 +153,11 @@ roles/<role_name>/
 
 ### ✅ Role: `k3s`
 
-📄 `roles/k3s/tasks/main.yml`
+```bash
+vi roles/k3s/tasks/main.yml
+```
+
+Paste:
 
 ```yaml
 - name: Install K3s
@@ -160,7 +175,11 @@ roles/<role_name>/
 
 ### ✅ Role: `sonarqube`
 
-📄 `roles/sonarqube/tasks/main.yml`
+```bash
+vi roles/sonarqube/tasks/main.yml
+```
+
+Paste:
 
 ```yaml
 - name: Pull SonarQube Docker image
@@ -183,7 +202,11 @@ roles/<role_name>/
 
 ### ✅ Role: `prometheus`
 
-📄 `roles/prometheus/tasks/main.yml`
+```bash
+vi roles/prometheus/tasks/main.yml
+```
+
+Paste:
 
 ```yaml
 - name: Create Prometheus config directory
@@ -218,7 +241,11 @@ roles/<role_name>/
 
 ### ✅ Role: `grafana`
 
-📄 `roles/grafana/tasks/main.yml`
+```bash
+vi roles/grafana/tasks/main.yml
+```
+
+Paste:
 
 ```yaml
 - name: Run Grafana container
@@ -233,7 +260,9 @@ roles/<role_name>/
 
 ---
 
-## 🚀 How to Run
+## 🚀 How to Run Ansible
+
+Once all files are in place:
 
 ```bash
 cd ansible/
@@ -242,16 +271,14 @@ ansible-playbook -i inventory playbook.yml
 
 ---
 
-## ✅ Next Steps
+## ✅ Access the Tools
 
-Once this completes, you'll have:
-
-| Tool       | URL                    | Default Credentials                        |
-| ---------- | ---------------------- | ------------------------------------------ |
-| Jenkins    | `http://<ec2-ip>:8080` | Unlock with `/var/lib/jenkins/secrets/...` |
-| SonarQube  | `http://<ec2-ip>:9000` | admin / admin                              |
-| Grafana    | `http://<ec2-ip>:3000` | admin / admin                              |
-| Prometheus | `http://<ec2-ip>:9090` | N/A                                        |
-| K3s        | `kubectl` on EC2       | Access via root context                    |
+| Tool           | URL                    | Default Credentials                                          |
+| -------------- | ---------------------- | ------------------------------------------------------------ |
+| **Jenkins**    | `http://<ec2-ip>:8080` | Unlock using `/var/lib/jenkins/secrets/initialAdminPassword` |
+| **SonarQube**  | `http://<ec2-ip>:9000` | `admin` / `admin`                                            |
+| **Grafana**    | `http://<ec2-ip>:3000` | `admin` / `admin`                                            |
+| **Prometheus** | `http://<ec2-ip>:9090` | No login required                                            |
+| **K3s**        | Use `kubectl` on EC2   | Config at `/etc/rancher/k3s/k3s.yaml`                        |
 
 ---
