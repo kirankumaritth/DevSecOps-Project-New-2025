@@ -22,5 +22,7 @@
 > 4. Once the overview is validated, we will proceed step-by-step into each component (starting with Terraform and Ansible).
 >
 > The pipeline will be deployed on **AWS**, so infrastructure provisioning should reflect that.
+>
+> This project i want to do it on same single AWS EC2-ubuntu 240.4 LTS with t2.medium instance and 50 GB of EBS
 
 ---
