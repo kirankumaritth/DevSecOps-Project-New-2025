@@ -1,4 +1,4 @@
-# 🔧 CI/CD Pipeline Architecture (Within Jenkins)
+# 🔧 Step 3: CI/CD Pipeline Architecture (Within Jenkins)
 
 ### 🔄 Jenkins Stages
 
